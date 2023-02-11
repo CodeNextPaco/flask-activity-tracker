@@ -1,9 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, url_for, redirect
 import sqlite3
+# The Session instance is not used for direct access, you should always use flask.session
+from flask_session import Session
 
 app = Flask(__name__)
 
 # Adding session for user
+app.config["SESSION_PERMANENT"] = False #allow it to expire
+app.config["SESSION_TYPE"] = "filesystem" #store the session locally
+Session(app)
 
 def validate_user(email, password):
     print("validating user...")
@@ -59,8 +64,11 @@ def signup():
 
 @app.route('/home')
 def home():
-
-    return render_template('home.html')
+    data ={}
+    if session.get("name"):
+        return render_template('home.html')
+    else:
+        return redirect(url_for('index'))
 
 @app.route('/login_user' , methods=['POST'])
 def login_user():
@@ -77,6 +85,9 @@ def login_user():
             "name": user["name"],
             "phone": user["phone"]
         }
+
+        #set the user session
+        session["name"] = user["name"]
 
         #load home if there is a user, along with data.
         return render_template('home.html', data=data)
@@ -101,15 +112,19 @@ def post_user():
     pw = request.form['password']
     
     store_user(name, email, phone, pw)
-
     users = get_all_users()
     # print(users)
-
     #get the last user entered
     new_user = users.pop()
 
-
     return render_template('index.html', user=new_user)
+
+@app.route('/logout')
+def logout():
+    session["name"] = None
+    return redirect(url_for('index'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
