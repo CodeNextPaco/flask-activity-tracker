@@ -3,6 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 
+# Adding session for user
 
 def validate_user(email, password):
     print("validating user...")
