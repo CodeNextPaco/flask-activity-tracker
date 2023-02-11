@@ -5,20 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HOME</title>
-
-    <style>
-        body{
-
-            background-color: gainsboro;
-            font-family: Cambria,  serif;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="./static/styles.css">
+    
 </head>
 <body>
+    <div class="main-container">
+        
     
-    <h3>HOME</h3>
+    <h2>ACTIVITY TRACKER HOME</h1>
+
+    {%  if data %}
     <p>Welcome!</p>
+    <p>{{ data.name }}</p>
+    <p>{{ data.phone }}</p>
+
+    {% endif %}
+    <p></p>
+
+</div>
    
 </body>
 </html>

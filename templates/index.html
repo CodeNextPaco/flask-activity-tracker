@@ -5,23 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./static/styles.css">
 
-    <style>
-        body{
-
-            background-color: gainsboro;
-            font-family: Cambria,  serif;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
+    <div class="main-container">
+    <h2>Activity Tracker</h2>
     
-    <h3>Activity Tracker</h3>
-    <p><a href="/signup">Sign up</a></p>
+    <hr/>
+    <p>Log in existing user</p>
+    <form action="login_user" method="POST">
+
+        
+        <input type="email" id="email-input" name="email" placeholder="Enter your email"> <p></p>
+        <input type="text" id="pw-input" name="password" placeholder="Enter your password"><p></p>
+        <button class="submit-btn" type="submit">Log in</button>
+
+    </form>
    
-
-
+    <p><a class="signup" href="/signup">Sign up</a></p>
+</div>
     
 </body>
 </html>

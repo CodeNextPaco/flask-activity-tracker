@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+html{
+    height:100%;
+}
+body{
+
+    font-family: 'DM Sans', sans-serif;
+    background-color: cornsilk;
+    background-image: url('https://source.unsplash.com/random/?wonderlust');
+    height:100%;
+    text-align: center;
+    color:aliceblue;
+    background-size: cover;
+    text-shadow: #000000 1px 1px 1px;
+}
+
+.main-container{
+    backdrop-filter: blur(8px);
+    height:100%;
+    margin:-10px;
+    padding:20px;
+   
+}
+
+input{
+
+    border-style:hidden;
+    border-radius:5px;
+    padding:5px;
+    height:30px;
+    width:300px;
+
+}
+
+.submit-btn{
+
+    width:300px;
+    height:40px;
+    background-color: deeppink;
+    color:aliceblue;
+    border-radius: 5px;
+    border-style:hidden;
+    font-size: larger;
+}
+.submit-btn:hover{
+
+    background-color: aliceblue;
+    color:deeppink;
+}
+.submit-btn:active{
+    width:306px;
+    height:42px;
+
+}
+
+.signup{
+    text-decoration: none;
+    color:aliceblue;
+}
