@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, url_for, redirect
 import sqlite3
 # The Session instance is not used for direct access, you should always use flask.session
 from flask_session import Session
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -17,10 +18,10 @@ def validate_user(email, password):
     conn = sqlite3.connect('./static/data/activity_tracker.db')
     curs = conn.cursor()
     #get all columns if there is a match
-    result  = curs.execute("SELECT name, email, phone FROM users WHERE email=(?) AND password= (?)", [email, password])
+    result  = curs.execute("SELECT rowid, name, email, phone FROM users WHERE email=(?) AND password= (?)", [email, password])
   
     for row in result:
-       user = {'name': row[0],  'email': row[1], 'phone': row[2]}
+       user = {'rowid': row[0], 'name': row[1],  'email': row[2], 'phone': row[3]}
          
     conn.close()
     return user
@@ -53,6 +54,39 @@ def get_all_users():
 
     return all_users
 
+def get_all_user_activities(id):
+    conn = sqlite3.connect('./static/data/activity_tracker.db')
+    curs = conn.cursor()
+    activities = [] # will store them in a list
+    result = curs.execute("SELECT * from activities WHERE user_id=(?)", (id,))
+    for row in result:
+        activity = {
+                'activity_name' : row[0], 
+                'date': row[1],
+                'quantity': row[2],
+                'description': row[3],
+                'type': row[4]
+                }
+        activities.append(activity)
+
+    conn.close()
+
+    return activities
+
+
+def store_activity(name, activity_type, desc, user, qty):
+
+    now = datetime.now() # current date and time   
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+
+    conn = sqlite3.connect('./static/data/activity_tracker.db')
+    curs = conn.cursor()
+    curs.execute("INSERT INTO activities (activity_name, date, quantity, description, user_id, type) VALUES((?),(?),(?),(?),(?),(?))",
+        (name, date_time, qty, desc, user, activity_type))
+    
+    conn.commit()
+    conn.close()
+
 
 @app.route('/')
 def index():
@@ -66,6 +100,10 @@ def signup():
 def home():
     data ={}
     if session.get("name"):
+
+        #make sure we have the latest ones, after every new one is added
+        activities = get_all_user_activities(userid)
+        session["activities"] = activities
         return render_template('home.html')
     else:
         return redirect(url_for('index'))
@@ -80,19 +118,23 @@ def login_user():
     user = validate_user(email, password)
 
     if user:
-       
         data = {
             "name": user["name"],
-            "phone": user["phone"]
+            "phone": user["phone"],
+            "id": user["rowid"]
+        
         }
 
         #set the user session
         session["name"] = user["name"]
+        session["userid"] = user["rowid"]
+        userid = user["rowid"]
+        activities = get_all_user_activities(userid)
+        session["activities"] = activities
 
         #load home if there is a user, along with data.
         return render_template('home.html', data=data)
          
-
     else: 
         error_msg = "Login failed"
 
@@ -101,6 +143,24 @@ def login_user():
         }
         #no user redirects back to the main login page, with error msg.
         return render_template('index.html', data=data)
+
+@app.route('/post_activity', methods=['POST'])
+def post_activity():
+    name = request.form['activity-name']
+    activity_type = request.form['activity-type']
+    description = request.form['activity-desc']
+    quantity = request.form["activity-qty"]
+    userid = session["userid"]
+    store_activity(name, activity_type, description, userid, quantity)
+
+    user_activities = get_all_user_activities(session['userid'])
+    print(user_activities)
+    session["activities"] = get_all_user_activities(session['userid'])
+     
+
+
+    return render_template('home.html')
+
 
 
 
@@ -122,6 +182,8 @@ def post_user():
 @app.route('/logout')
 def logout():
     session["name"] = None
+    session["userid"] = None
+    session["activities"] = None
     return redirect(url_for('index'))
 
 

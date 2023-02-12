@@ -12,12 +12,12 @@ body{
     text-align: center;
     color:aliceblue;
     background-size: cover;
-    text-shadow: #000000 1px 1px 1px;
+    text-shadow: #000000 0px 0px 2px;
 }
 
 .main-container{
     backdrop-filter: blur(8px);
-    height:100%;
+    height:inherit;
     margin:-10px;
     padding:20px;
    
@@ -31,6 +31,20 @@ input{
     height:30px;
     width:300px;
 
+}
+textarea{
+    border-style:hidden;
+    border-radius:5px;
+    padding:5px;
+
+}
+select{
+
+    width:200px;
+    height:30px;
+    border-style:hidden;
+    border-radius:5px;
+    padding:5px;
 }
 
 .submit-btn{
@@ -63,4 +77,45 @@ input{
 
     text-decoration: none;
     color:aliceblue;
+}
+
+.add-activity-container{
+    margin-top: 20px;
+}
+.activities-container{
+
+    margin-bottom: 20px;
+}
+
+.activity-tile{
+
+    text-align: left;
+    padding: 10px;
+    background-color:rgba(250, 240, 250, 0.8);
+    height:fit-content;
+    margin-left:20%;
+    margin-right:20%;
+    margin-top:3px;
+    border-radius:2px;
+    
+}
+ 
+.tile-item{
+
+    margin-bottom:-4px;
+    margin-top: -4px;
+    text-shadow: none;
+    color: #3b3a3b
+}
+
+.activity-date{
+
+    font-size: x-small;
+    margin-top: 2px;
+    color:#555255;
+}
+
+.add-activity-container{
+
+   
 }

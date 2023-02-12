@@ -11,16 +11,21 @@
 <body>
     <div class="main-container">
     <h2>Activity Tracker</h2>
+    <p>Activity tracker is a demo app to illustrate how to store data using SQLite and 
+        Flask. It also uses Flask sessions to keep track of users who log in. This version
+        allows users to sign up, log in and create activiites. Only the activities created by 
+        a user will show up in their "My activities section".
+    </p>
+    <p>
+        Next: How to delete and edit existing activities and how to send them via SMS.
+    </p>
     
     <hr/>
     <p>Log in existing user</p>
     <form action="login_user" method="POST">
-
-        
         <input type="email" id="email-input" name="email" placeholder="Enter your email"> <p></p>
         <input type="text" id="pw-input" name="password" placeholder="Enter your password"><p></p>
         <button class="submit-btn" type="submit">Log in</button>
-
     </form>
    
     <p><a class="signup" href="/signup">Sign up</a></p>

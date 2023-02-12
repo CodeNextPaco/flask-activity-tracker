@@ -10,17 +10,47 @@
 </head>
 <body>
     <div class="main-container">
-        <p class="logout"><a href="/logout">Logout</a></p>   
+        <p ><a class="logout" href="/logout">Logout</a></p>   
     
     <h2>ACTIVITY TRACKER HOME</h1>
-
    
-    <p>Welcome {{ session.name }}!</p>
+    <p>Welcome {{ session.name }}! {{ session.userid }}</p>
     <p></p>
     
+    <button class="add-activity" >Add actvity</button>
+    <div class="add-activity-container">
+        <form id="post-activity-form" action="post_activity" method="POST" >
+            ​<input type="text" placeholder="Activity Name" name="activity-name" />
+            <p></p>
+            ​<input type="text" placeholder="Activity Type" name="activity-type" />
+            <p></p>
+            ​<textarea placeholder="Enter a description" name="activity-desc" rows="10" cols="40"></textarea>
+            <p></p>
+            ​<input type="text" placeholder=" Quantity (hours, reps, etc.)" name="activity-qty" />
+            <p></p>
+            <button class="submit-btn" type="submit">Save</button>
+            
+        </form>
+        
+    </div>
 
-    
-    <p></p>
+     <div class="activities-container">
+        <h3>My activities</h3>
+        
+
+            {% for item in session.activities %}
+            <div class="activity-tile">
+                
+                 <h3 class="tile-item activity-name">{{ item.activity_name }}  </h3>   
+                 <p class=" tile-item  activity-desc"> {{ item.description }}</p>
+                 <p class=" tile-item activity-date"> {{ item.date }}</p>
+
+            </div>
+            {% endfor %}
+
+
+
+     </div>
 
 </div>
    
