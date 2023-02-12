@@ -1,6 +1,6 @@
 # flask-activity-tracker
 
-Demo app for using SQLite with Flask on a Raspberry Pi. This version shows how to create a new user and log in with basic email/password credentials. No validation or user sessions are used. 
+Demo app for using SQLite with Flask on a Raspberry Pi. This version shows how user sessions are used. 
 The goal of this demo is to show how to store data and retrieve it from a SQLite database.
 
 
