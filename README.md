@@ -1,11 +1,10 @@
 # flask-activity-tracker
 
-Demo app for using SQLite with Flask on a Raspberry Pi. This version shows how to create a new user and log in with basic email/password credentials. No validation or user sessions are used. 
+Demo app for using SQLite with Flask on a Raspberry Pi. This version now includes the ability to create new activities. 
 
-The goal of this demo is to show how to store data and retrieve it from a SQLite database.
+A user who logs in will now be able to create a new activity from the `home.html` page. The activity will also save
+a reference to the current userID, which is obtained from the SQLite `rowid` that each new row includes by default. 
 
-Setup:
-1. Install SQLite3
-2. Install Flask
-3. Clone project
-4. Create your own database and replace it in static/data
+This will allow the association of activiites to users, so only users will be able to see their own activities. 
+
+Session now also now keep track of `session["activities"]` that are obtained by querying the database with `get_all_user_activites(id)` which take the session id as an argument.   
