@@ -17,8 +17,8 @@
     <p>Welcome {{ session.name }}! {{ session.userid }}</p>
     <p></p>
     
-    <button class="add-activity" >Add actvity</button>
-    <div class="add-activity-container">
+    <button id="add-activity-btn" onclick="addActivity()">Add activity</button>
+    <div id="add-activity-container">
         <form id="post-activity-form" action="post_activity" method="POST" >
             ​<input type="text" placeholder="Activity Name" name="activity-name" />
             <p></p>
@@ -28,7 +28,7 @@
             <p></p>
             ​<input type="text" placeholder=" Quantity (hours, reps, etc.)" name="activity-qty" />
             <p></p>
-            <button class="submit-btn" type="submit">Save</button>
+            <button class="submit-btn" type="submit" onclick="showBtn()">Save</button>
             
         </form>
         
@@ -40,19 +40,40 @@
 
             {% for item in session.activities %}
             <div class="activity-tile">
-                
-                 <h3 class="tile-item activity-name">{{ item.activity_name }}  </h3>   
-                 <p class=" tile-item  activity-desc"> {{ item.description }}</p>
-                 <p class=" tile-item activity-date"> {{ item.date }}</p>
-
+                 <!--New edit link for each tile-->
+                 <a class="edit-link" href="{{ '/edit-activity/%s' %item.rowid }}">
+                    <h3 class="tile-item activity-name"> {{ item.rowid}} - {{ item.activity_name }}  </h3>   
+                    <p class=" tile-item  activity-desc"> {{ item.description }}</p>
+                    <p class=" tile-item activity-date"> {{ item.date }}</p>
+                </a>
             </div>
             {% endfor %}
 
 
-
+            
      </div>
-
+     
 </div>
+<script>
+
+let addActivityBtn = document.querySelector('#add-activity-btn')
+
+let activityContainer = document.querySelector("#add-activity-container")
+        
+
+    function addActivity(){
+
+        activityContainer.style.display = 'block'
+        addActivityBtn.style.display = 'none';
+    }
+
+    function showBtn(){
+
+        addActivityBtn.style.display = 'block';
+    }
+
+
+</script>
    
 </body>
 </html>

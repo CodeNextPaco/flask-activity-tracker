@@ -115,7 +115,18 @@ select{
     color:#555255;
 }
 
-.add-activity-container{
+#add-activity-container{
+   /* hiding  until one clicks on add activity button */
+    display: none;
+}
 
-   
+#add-activity-btn{
+
+    width:200px;
+    margin-bottom: 12px;
+}
+
+.edit-link{
+
+    text-decoration: none;
 }

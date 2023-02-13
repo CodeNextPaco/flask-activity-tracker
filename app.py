@@ -11,6 +11,8 @@ app.config["SESSION_PERMANENT"] = False #allow it to expire
 app.config["SESSION_TYPE"] = "filesystem" #store the session locally
 Session(app)
 
+
+####### User functions #######
 def validate_user(email, password):
     print("validating user...")
     user = {}
@@ -54,18 +56,21 @@ def get_all_users():
 
     return all_users
 
+
+####### Activity functions #######
 def get_all_user_activities(id):
     conn = sqlite3.connect('./static/data/activity_tracker.db')
     curs = conn.cursor()
     activities = [] # will store them in a list
-    result = curs.execute("SELECT * from activities WHERE user_id=(?)", (id,))
+    result = curs.execute("SELECT rowid, * from activities WHERE user_id=(?)", (id,))
     for row in result:
         activity = {
-                'activity_name' : row[0], 
-                'date': row[1],
-                'quantity': row[2],
-                'description': row[3],
-                'type': row[4]
+                'rowid' : row[0],
+                'activity_name' : row[1], 
+                'date': row[2],
+                'quantity': row[3],
+                'description': row[4],
+                'type': row[5]
                 }
         activities.append(activity)
 
@@ -87,7 +92,49 @@ def store_activity(name, activity_type, desc, user, qty):
     conn.commit()
     conn.close()
 
+def get_activity_by_id(id):
+    #returns the activity given a rowid
+    activity ={}
 
+    conn = sqlite3.connect('./static/data/activity_tracker.db')
+    curs = conn.cursor()
+
+    result  = curs.execute("SELECT rowid, * FROM activities WHERE rowid=(?)", [id])
+    for row in result:
+        #skip date and userid, those can't be edited.
+        activity = {'rowid': row[0],  
+                    'activity_name': row[1],
+                    'quantity': row[3],
+                    'description':row[4],
+                    'type':row[6]
+                    }
+    
+    conn.close()
+    print("Editing Activity >>> ")
+    print(activity)
+
+    return activity
+
+def update_activity(id, activity):
+
+    conn = sqlite3.connect('./static/data/activity_tracker.db')
+    curs = conn.cursor()
+
+    result = curs.execute("UPDATE activities SET activity_name=(?), description=(?), quantity=(?), type=(?) WHERE rowid=(?)",
+     (activity["name"], activity["desc"] ,activity["qty"] , activity["type"] , id))
+    conn.commit()
+    conn.close()
+
+    print("result of updating>>>>>")
+    print(result)
+
+
+
+
+
+
+
+####### APP ROUTES #######
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -102,7 +149,7 @@ def home():
     if session.get("name"):
 
         #make sure we have the latest ones, after every new one is added
-        activities = get_all_user_activities(userid)
+        activities = get_all_user_activities(session["userid"])
         session["activities"] = activities
         return render_template('home.html')
     else:
@@ -178,6 +225,46 @@ def post_user():
     new_user = users.pop()
 
     return render_template('index.html', user=new_user)
+
+
+
+
+
+@app.route('/edit-activity/<id>', methods=["POST", "GET"])
+def edit_activity(id ):
+    #runs when user clicks on an activity to edit
+    data ={}
+
+    #if the route sends a POST request (when updating):
+    if request.method == 'POST':
+        name= request.form["activity-name"]
+        desc = request.form["activity-description"]
+        activity_type = request.form["activity-type"]
+        qty = request.form["activity-qty"]
+
+        updated_activity ={
+
+            "name": name,
+            "desc" : desc,
+            "type" :activity_type,
+            "qty" : qty
+        }
+
+        update_activity(id, updated_activity)
+
+        return redirect(url_for('home'))
+
+    #if not updating, just get the user to the edit screen
+    activity = get_activity_by_id(id)
+
+    if activity:
+        data={
+            "activity": activity
+            }
+
+    return render_template("edit.html", data=data)
+
+
 
 @app.route('/logout')
 def logout():

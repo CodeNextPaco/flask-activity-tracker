@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDIT</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    
+</head>
+<body>
+    <div class="main-container">
+        <p ><a class="logout" href="/logout">Logout</a></p>   
+    
+    <h2>EDIT ACTIVITY</h1>
+   
+   
+    <p></p>
+
+    {% if data %}
+
+         
+        <form id="post-activity-form"  method="POST" >
+            <label for="activity-name-input">Activity name</label><br/>
+            ​<input type="text" id="activity-name-input"  name="activity-name" value="{{data.activity.activity_name}}"/>
+            <p></p>
+            <label for="activity-desc-input">Activity description</label><br/>
+            ​<textarea type="text" id="activity-desc-input"  name="activity-description" rows="4" cols="40">{{data.activity.description}}</textarea>
+            <p></p>
+            <label for="activity-type-input">Activity type</label><br/>
+            ​<input type="text" id="activity-type-input"  name="activity-type" value="{{data.activity.type}}"/>
+            <p></p>
+            <label for="activity-qty-input">Activity quantity</label><br/>
+            ​<input type="text" id="activity-qty-input"  name="activity-qty" value="{{data.activity.quantity}}"/>
+            <p></p>
+            <button class="submit-btn update-activity-btn" type="submit">Update</button>
+            
+        </form>
+    {% endif %} 
+
+   
+
+</div>
+<script>
+
+</script>
+   
+</body>
+</html>
