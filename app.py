@@ -125,9 +125,22 @@ def update_activity(id, activity):
     conn.commit()
     conn.close()
 
-    print("result of updating>>>>>")
-    print(result)
 
+
+
+def delete_from_table(table, id):
+
+    #can be used on any table to delete by id
+
+    conn = sqlite3.connect('./static/data/activity_tracker.db')
+    curs = conn.cursor()
+
+    if table == "activity":
+
+        curs.execute("DELETE FROM activities WHERE rowid=(?)", (id,))
+ 
+        conn.commit()
+        conn.close()
 
 
 
@@ -228,6 +241,14 @@ def post_user():
 
 
 
+@app.route('/delete-activity/<id>')
+def delete_activity(id):
+
+    delete_from_table("activity", id) #specify an activity to be deleted
+
+    return redirect(url_for('home'))
+
+
 
 
 @app.route('/edit-activity/<id>', methods=["POST", "GET"])
@@ -252,6 +273,8 @@ def edit_activity(id ):
 
         update_activity(id, updated_activity)
 
+        
+
         return redirect(url_for('home'))
 
     #if not updating, just get the user to the edit screen
@@ -259,7 +282,8 @@ def edit_activity(id ):
 
     if activity:
         data={
-            "activity": activity
+            "activity": activity, 
+            "rowid": id
             }
 
     return render_template("edit.html", data=data)

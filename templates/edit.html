@@ -36,12 +36,27 @@
             <button class="submit-btn update-activity-btn" type="submit">Update</button>
             
         </form>
-    {% endif %} 
 
-   
+        
+    {% endif %} 
+<!-- 
+   <p><a  class="delete-link" href="{{ '/delete-activity/%s' %data.rowid }}">Delete Activity</a></p> -->
+
+   <button id="delete-activity-btn" onclick="confirmDelete()">Delete</button>
 
 </div>
 <script>
+
+    //let deleteBtn  = document.querySelector('#delete-activity-btn')
+
+    function confirmDelete(){
+
+        if (confirm("Are you sure?") == true){
+''
+            window.location.href="{{ '/delete-activity/%s' %data.rowid }}"
+
+        } 
+    }
 
 </script>
    
